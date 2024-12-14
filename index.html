@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+  <title>Simulate Fullscreen on Safari</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden; /* Disable default scrolling */
+      height: 100%;
+      width: 100%;
+      position: relative;
+    }
+
+    /* Fullscreen container */
+    #fullscreenContainer {
+      width: 100vw;
+      height: 200vh; /* Height ensures scroll position change */
+      background-color: black;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 9999;
+    }
+
+    .content {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: white;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      background-color: red;
+      color: white;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="fullscreenContainer"></div>
+  <div class="content">
+    <button class="btn" id="fullscreenButton">Go Fullscreen</button>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const fullscreenButton = document.getElementById("fullscreenButton");
+
+      function hideAddressBar() {
+        setTimeout(() => {
+          window.scrollTo(0, 1); // Forces the address bar to hide
+        }, 50);
+      }
+
+      function simulateFullscreen() {
+        document.body.style.overflow = "hidden";
+        hideAddressBar();
+      }
+
+      // Trigger fullscreen simulation on button click
+      fullscreenButton.addEventListener("click", () => {
+        simulateFullscreen();
+        alert("Address bar should now be hidden (if possible).");
+      });
+
+      // Hide address bar on orientation change
+      window.addEventListener("orientationchange", () => {
+        hideAddressBar();
+      });
+
+      // Automatically hide address bar on load
+      hideAddressBar();
+    });
+  </script>
+</body>
+</html>
