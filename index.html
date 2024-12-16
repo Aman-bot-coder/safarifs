@@ -1,93 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Hide Address Bar Fullscreen</title>
-    <style>
-        body,
-        html {
-            height: 100%;
-            margin: 0;
-            overflow: hidden;
-        }
-
-        .content {
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background: #282c34;
-        }
-
-        .btn {
-            padding: 15px 30px;
-            font-size: 20px;
-            background-color: red;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fullscreen and Music</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f0f0;
+    }
+    button {
+      padding: 15px 30px;
+      margin: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #fullscreen-btn {
+      background-color: #4CAF50;
+      color: white;
+    }
+    #music-btn {
+      background-color: #2196F3;
+      color: white;
+    }
+  </style>
 </head>
-
 <body>
-    <div class="content">
-        <button class="btn" id="startBtn">Go Fullscreen</button>
-    </div>
+  <button id="fullscreen-btn">Enter Fullscreen</button>
+  <button id="music-btn">Play Music</button>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const startBtn = document.getElementById('startBtn');
+  <audio id="music" src="your-audio-file.mp3"></audio>
 
-            // Function to hide the address bar
-            function hideAddressBar() {
-                window.scrollTo(0, 1); // Scroll slightly to hide the address bar
-            }
+  <script>
+    // Fullscreen button functionality
+    const fullscreenBtn = document.getElementById('fullscreen-btn');
+    fullscreenBtn.addEventListener('click', () => {
+      const elem = document.documentElement; // Fullscreen the entire document
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) { // For Safari
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) { // For IE/Edge
+        elem.msRequestFullscreen();
+      }
+    });
 
-            // Function to request fullscreen mode
-            function goFullscreen() {
-                const element = document.documentElement; // Whole document as fullscreen
+    // Music button functionality
+    const musicBtn = document.getElementById('music-btn');
+    const music = document.getElementById('music');
 
-                if (element.requestFullscreen) {
-                    element.requestFullscreen();
-                } else if (element.webkitRequestFullscreen) {
-                    element.webkitRequestFullscreen();
-                } else if (element.msRequestFullscreen) {
-                    element.msRequestFullscreen();
-                }
-            }
-
-            // When the user clicks the "Go Fullscreen" button
-            startBtn.addEventListener('click', () => {
-                // Hide address bar first
-                hideAddressBar();
-
-                // Then, go fullscreen after a slight delay
-                setTimeout(() => {
-                    goFullscreen();
-                }, 500); // Allow time for scroll to happen
-            });
-
-            // Workaround for iOS: Try to hide the address bar when the page is first loaded
-            if (window.innerHeight < screen.height) {
-                // Trigger onload event to hide the address bar
-                setTimeout(() => {
-                    window.scrollTo(0, 1); // Hide address bar by scrolling
-                }, 500);
-            }
-
-            // iOS - Allow users to add app to the home screen (for better fullscreen behavior)
-            if ('standalone' in window.navigator && window.navigator.standalone) {
-                // If app is installed, hide the address bar on load
-                hideAddressBar();
-            }
-        });
-    </script>
+    musicBtn.addEventListener('click', () => {
+      if (music.paused) {
+        music.play();
+        musicBtn.textContent = "Pause Music";
+      } else {
+        music.pause();
+        musicBtn.textContent = "Play Music";
+      }
+    });
+  </script>
 </body>
-
 </html>
